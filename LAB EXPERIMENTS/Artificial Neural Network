@@ -1,0 +1,84 @@
+import numpy as np
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Input dataset
+X = np.array([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1],
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+
+# Target output (XOR)
+y = np.array([
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0
+])
+
+# Split data into training and testing data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# Create Artificial Neural Network
+# hidden_layer_sizes = number of neurons in hidden layer
+# activation = activation function
+# solver = 'sgd' uses backpropagation with gradient descent
+model = MLPClassifier(
+    hidden_layer_sizes=(4,),
+    activation='logistic',
+    solver='sgd',
+    learning_rate_init=0.5,
+    max_iter=2000,
+    random_state=42
+)
+
+# Train the ANN
+model.fit(X_train, y_train)
+
+# Predict test data
+y_pred = model.predict(X_test)
+
+# Display results
+print("Training Data:")
+print(X_train)
+
+print("\nActual Output:")
+print(y_test)
+
+print("\nPredicted Output:")
+print(y_pred)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+print("\nAccuracy:")
+print(accuracy * 100, "%")
+
+# Test new samples
+new_samples = np.array([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+
+predictions = model.predict(new_samples)
+
+print("\nNew Samples:")
+print(new_samples)
+
+print("\nPredicted Classes:")
+print(predictions)
